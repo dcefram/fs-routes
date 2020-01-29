@@ -1,4 +1,4 @@
-# fs-router
+# fs-routes
 
 Inspired by ZEIT Now's Serverless Functions structure. Also inspired by the "original" [fs-router](https://github.com/jesseditson/fs-router) for [Micro](https://github.com/zeit/micro).
 
@@ -15,7 +15,7 @@ I made this *helper* for a NodeJS project that uses [Polka](https://github.com/l
 ## Installation
 
 ```bash
-npm i @dcefram/fs-router
+npm i @dcefram/fs-routes
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ npm i @dcefram/fs-router
 In your entry file where you created your polka/express app:
 ```javascript
 const polka = require('polka');
-const createRoutes = require('fs-router');
+const createRoutes = require('fs-routes');
 const app = polka();
 
 createRoutes(app, '/routes')

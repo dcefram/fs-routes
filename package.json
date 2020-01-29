@@ -1,6 +1,6 @@
 {
   "name": "@dcefram/fs-routes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Polka/Express routing based on the folder structure. Inspired by ZEIT Now's Serverless Functions structure/workflow.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dcefram/fs-router.git"
+    "url": "git+ssh://git@github.com/dcefram/fs-routes.git"
   },
   "keywords": [
     "router",
@@ -21,7 +21,7 @@
   "author": "Daniel Cefram Ramirez <dcefram@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dcefram/fs-router/issues"
+    "url": "https://github.com/dcefram/fs-routes/issues"
   },
-  "homepage": "https://github.com/dcefram/fs-router#readme"
+  "homepage": "https://github.com/dcefram/fs-routes#readme"
 }
