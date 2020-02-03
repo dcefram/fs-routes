@@ -23,7 +23,7 @@ npm i @dcefram/fs-routes
 In your entry file where you created your polka/express app:
 ```javascript
 const polka = require('polka');
-const createRoutes = require('fs-routes');
+const createRoutes = require('@dcefram/fs-routes');
 const app = polka();
 
 createRoutes(app, '/routes')
