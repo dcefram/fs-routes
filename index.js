@@ -29,7 +29,13 @@ module.exports = function(app, path) {
   Object.keys(items).forEach(route => {
     const routeObject = items[route];
     Object.keys(routeObject).forEach(method => {
-      app[method](route.replace(/.js$/, ''), routeObject[method]);
+      let routeValue = routeObject[method];
+
+      if (!routeValue instanceof Array) {
+        routeValue = [routeValue]
+      }
+
+      app[method](route.replace(/.js$/, ''), ...routeValue);
     });
   });
 
