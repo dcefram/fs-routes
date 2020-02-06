@@ -31,8 +31,8 @@ module.exports = function(app, path) {
     Object.keys(routeObject).forEach(method => {
       let routeValue = routeObject[method];
 
-      if (!routeValue instanceof Array) {
-        routeValue = [routeValue]
+      if (!Array.isArray(routeValue)) {
+        routeValue = [routeValue];
       }
 
       app[method](route.replace(/.js$/, ''), ...routeValue);
