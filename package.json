@@ -1,6 +1,6 @@
 {
   "name": "@dcefram/fs-routes",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Polka/Express routing based on the folder structure. Inspired by ZEIT Now's Serverless Functions structure/workflow.",
   "main": "index.js",
   "scripts": {

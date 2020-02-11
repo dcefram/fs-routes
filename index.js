@@ -26,7 +26,19 @@ module.exports = function(app, path) {
   const items = listFilesRecursive(path, path);
 
   // Yeah yeah, O(n^2)
-  Object.keys(items).forEach(route => {
+  Object.keys(items).sort((left, right) => {
+    const leftSeg = left.split('/')
+    const rightSeg = right.split('/');
+
+    if (leftSeg[leftSeg.length - 1][0] === ':') {
+      return 1;
+    } else if (rightSeg[rightSeg.length - 1][0] === ':') {
+      return -1;
+    }
+
+    return 0;
+  }).forEach(route => {
+    console.log(route)
     const routeObject = items[route];
     Object.keys(routeObject).forEach(method => {
       let routeValue = routeObject[method];
