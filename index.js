@@ -38,7 +38,6 @@ module.exports = function(app, path) {
 
     return 0;
   }).forEach(route => {
-    console.log(route)
     const routeObject = items[route];
     Object.keys(routeObject).forEach(method => {
       let routeValue = routeObject[method];
