@@ -1,10 +1,12 @@
 {
   "name": "@dcefram/fs-routes",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Polka/Express routing based on the folder structure. Inspired by ZEIT Now's Serverless Functions structure/workflow.",
-  "main": "index.js",
+  "source": "src/fs-routes.ts",
+  "main": "dist/fs-routes.js",
+  "types": "dist/fs-routes.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "microbundle"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,22 @@
   "bugs": {
     "url": "https://github.com/dcefram/fs-routes/issues"
   },
-  "homepage": "https://github.com/dcefram/fs-routes#readme"
+  "homepage": "https://github.com/dcefram/fs-routes#readme",
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
+    "microbundle": "^0.12.0",
+    "prettier": "^2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }
