@@ -27,10 +27,10 @@
   },
   "homepage": "https://github.com/dcefram/fs-routes#readme",
   "devDependencies": {
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.6",
-    "microbundle": "^0.12.0",
-    "prettier": "^2.0.5"
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
+    "microbundle": "^0.14.1",
+    "prettier": "^2.4.1"
   },
   "husky": {
     "hooks": {
