@@ -1,16 +1,15 @@
 # fs-routes
 
-Inspired by ZEIT Now's Serverless Functions structure. Also inspired by the "original" [fs-router](https://github.com/jesseditson/fs-router) for [Micro](https://github.com/zeit/micro).
+Inspired by Vercel's Nextjs approach to pages. Also inspired by the "original" [fs-router](https://github.com/jesseditson/fs-router) for [Micro](https://github.com/vercel/micro).
 
-I made this *helper* for a NodeJS project that uses [Polka](https://github.com/lukeed/polka). I assume that this would also work for Express as they share very similar route patterns.
+I initially made this for [Polka](https://github.com/lukeed/polka), but it also worked for my newer fastify-based projects when that became a thing.
 
 ## Features
 
-- Structure route handlers like Serverless Functions
+- Structure route handlers like serverless functions/lambdas
 - Zero dependencies
 - Zero configuration
 - Path segments
-- < 50 LOC
 
 ## Installation
 
@@ -20,57 +19,72 @@ npm i @dcefram/fs-routes
 
 ## Usage
 
-In your entry file where you created your polka/express app:
+In your entry file where you created your fastify, polka, or express app:
+
 ```javascript
-const polka = require('polka');
-const createRoutes = require('@dcefram/fs-routes');
-const app = polka();
+import Fastify from "fastify";
+import fsRoutes from "@dcefram/fs-routes";
+const fastify = Fastify({ logger: true });
 
-createRoutes(app, '/routes')
-  .listen(process.env.PORT, error => {
-    if (error) throw error;
+fsRoutes(fastify, "/routes").listen(process.env.PORT, (error) => {
+  if (error) throw error;
 
-    console.log(`API Server running at port ${process.env.PORT}`);
-  })
+  console.log(`API Server running at port ${process.env.PORT}`);
+});
 ```
 
 Folder structure of your app:
+
 ```bash
 your-app
-├── index.js # assuming that this is where you created your polka app
+├── index.js # assuming that this is where you initialized your fastify app
 └── routes
     └── user
-        ├── :slug
+        ├── [slug]
         │   ├── images.js
         │   └── comments.js
-        └── :slug.js
+        └── [slug].js
 ```
 
 Each routes file should have a `module.exports` that exports an object that contains the handlers. Here's an example:
 
 ```javascript
-// :slug.js
-const send = require('@polka/send-type');
+const httpErrors = require("http-errors");
 
 module.exports = {
-  get: (req, res) => {
+  get: (request, reply) => {
     const { slug } = req.params;
-
-    send(res, 200, {
-      slug,
-    });
+    reply.send({ slug });
   },
-  put: (req, res) => {
-    send(res, 501);
+  put: (request, reply) => {
+    reply.send(httpErrors.NotImplemented());
   },
-  delete: (req, res) => {
-    send(res, 501);
-  }
+  delete: (request, reply) => {
+    reply.send(httpErrors.NotImplemented());
+  },
 };
+```
 
+It could also export the handlers using the ESM format:
+
+```javascript
+// OR export
+export function get(request, reply) {
+  const { slug } = req.params;
+  reply.send({ slug });
+}
+
+export function put(request, reply) {
+  reply.send(httpErrors.NotImplemented());
+}
+
+export function delete(request, reply) {
+  reply.send(httpErrors.NotImplemented());
+}
 ```
 
 With the folder structure above, you'll get the following endpoints:
+
 ```bash
 GET /user/:slug
 PUT /user/:slug
@@ -81,6 +95,5 @@ GET /user/:slug/comments # assuming that comments.js has only `get` exported
 
 ## Why make this?
 
-After maintaining (ie. adding endpoints/features) a Polka-based project, I missed how easy it was to work on Now.sh' serverless functions. Just add an `api` folder in your project and add Micro-like files in it.
-
-I disliked the ceremony of adding new routes in the project that I worked on that followed the MVC pattern, and decided to *refactor* it. I wanted to use ZEIT's Micro framework after I found out that someone made [fs-router](https://github.com/jesseditson/fs-router) for it, but decided not to due to many custom middlewares that the team made, that I would need to port over.
+I liked how easy it was to navigate through a Next.js-based project. But there are times that we simply want to ship a pure Node.js API without the frontend,
+and this is one of the building blocks that I made to make sure that I stay happy building the project.
