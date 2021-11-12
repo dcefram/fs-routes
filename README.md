@@ -85,12 +85,49 @@ export function delete(request, reply) {
 
 With the folder structure above, you'll get the following endpoints:
 
-```bash
+````bash
 GET /user/:slug
 PUT /user/:slug
 DELETE /user/:slug
 GET /user/:slug/images # assuming that images.js has only `get` exported
 GET /user/:slug/comments # assuming that comments.js has only `get` exported
+
+### Ignore Files
+
+By default, fs-routes will ignore all files that is prefixed with an underscore (`_`). Example:
+
+```bash
+
+your-app
+├── index.js
+└── routes
+    └── user
+        ├── _helpers        # This folder will be ignored
+        │   └── some-reusable-logic.js
+        ├── [slug]
+        │   ├── images.js
+        │   ├── comments.js
+        │   └── _utils.js    # This file will be ignored
+        └── [slug].js
+````
+
+You can overwrite the ignore pattern, and supply it with your own. Example:
+
+```javascript
+import Fastify from "fastify";
+import fsRoutes from "@dcefram/fs-routes";
+
+const fastify = Fastify({ logger: true });
+const ignorePattern = "\\.internal\\."; // Will ignore files and folders with ".internal." in its name
+
+fsRoutes(fastify, "/routes", { ignorePattern }).listen(
+  process.env.PORT,
+  (error) => {
+    if (error) throw error;
+
+    console.log(`API Server running at port ${process.env.PORT}`);
+  }
+);
 ```
 
 ## Why make this?

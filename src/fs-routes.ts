@@ -3,18 +3,26 @@ import path from "path";
 import process from "process";
 import inlineRequire from "./require";
 
+interface Options {
+  ignorePattern?: string;
+}
+
 interface FilesMap {
   [route: string]: NodeRequire;
 }
 
-type KeyPath = {
+interface KeyPath {
   key: string;
   path: string;
-};
+}
 
 const slugPattern = "\\[([\\w\\-\\_\\~]+)\\]";
 
-export function listFilesRecursive(path: string, rootPath: string): FilesMap {
+export function listFilesRecursive(
+  path: string,
+  rootPath: string,
+  ignorePattern: string = "^_"
+): FilesMap {
   try {
     const items = fs.readdirSync(process.cwd() + path);
     let result = {};
@@ -23,6 +31,10 @@ export function listFilesRecursive(path: string, rootPath: string): FilesMap {
       const targetPath = `${path}/${item}`;
       const stat = fs.lstatSync(process.cwd() + targetPath);
       const key = targetPath.replace(rootPath, "");
+
+      if (new RegExp(ignorePattern).test(key)) {
+        return stack;
+      }
 
       if (stat.isDirectory()) {
         return { ...stack, ...listFilesRecursive(targetPath, rootPath) };
@@ -76,8 +88,8 @@ export function convertKeysToRoutePath(key: string): KeyPath {
   return { key, path: routePath };
 }
 
-export default function (app: any, rootPath: string) {
-  const items = listFilesRecursive(rootPath, rootPath);
+export default function fsRoutes(app: any, rootPath: string, options: Options) {
+  const items = listFilesRecursive(rootPath, rootPath, options.ignorePattern);
 
   Object.keys(items)
     .sort(sortItems)
