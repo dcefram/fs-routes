@@ -89,7 +89,7 @@ export function convertKeysToRoutePath(key: string): KeyPath {
 }
 
 export default function fsRoutes(app: any, rootPath: string, options: Options) {
-  const items = listFilesRecursive(rootPath, rootPath, options.ignorePattern);
+  const items = listFilesRecursive(rootPath, rootPath, options?.ignorePattern);
 
   Object.keys(items)
     .sort(sortItems)
