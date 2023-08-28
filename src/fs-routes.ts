@@ -21,7 +21,7 @@ const slugPattern = "\\[([\\w\\-\\_\\~]+)\\]";
 export function listFilesRecursive(
   path: string,
   rootPath: string,
-  ignorePattern: string = "^_"
+  ignorePattern: string = "^_",
 ): FilesMap {
   try {
     const items = fs.readdirSync(process.cwd() + path);
@@ -64,7 +64,7 @@ export function sortItems(left: string, right: string) {
     return 1;
   }
 
-  const slugRegex = new RegExp(`${slugPattern}\.js$`, "i");
+  const slugRegex = new RegExp(`${slugPattern}\.(js|ts)$`, "i");
   if (slugRegex.test(leftFilename)) {
     return 1;
   } else if (slugRegex.test(rightFilename)) {
@@ -75,15 +75,11 @@ export function sortItems(left: string, right: string) {
 }
 
 export function convertKeysToRoutePath(key: string): KeyPath {
-  let routePath = key.replace(/.(js|ts)$/, "");
+  let routePath = key.replace(/\.(js|ts)$/, "");
   routePath = routePath.replace(/\/index$/, "");
   routePath = routePath.replace(
-    new RegExp(`${slugPattern}\.js$`, "i"),
-    (_, slug) => `:${slug}.js`
-  );
-  routePath = routePath.replace(
     new RegExp(slugPattern, "ig"),
-    (_, slug) => `:${slug}`
+    (_, slug) => `:${slug}`,
   );
   return { key, path: routePath };
 }
